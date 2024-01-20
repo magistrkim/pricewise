@@ -28,7 +28,16 @@ const Home = () => {
           HeroCarousel
         </div>
       </section>
-      <section></section>
+      <section className="trending-section">
+        <h2 className="section-text">Trending</h2>
+        <div className="flex flex-wrap gap-x-8 gap-y-16">
+          {["Apple Iphone 15", "Book", "Sneakers", "Laptops"].map(
+            (product, index) => (
+              <div key={index}>{product}</div>
+            )
+          )}
+        </div>
+      </section>
     </>
   );
 };
