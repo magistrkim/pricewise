@@ -1,3 +1,6 @@
+import axios from "axios";
+import * as cheerio from "cheerio";
+
 export async function scrapeAmazonProduct(url: string) {
   if (!url) return;
 
@@ -16,6 +19,9 @@ export async function scrapeAmazonProduct(url: string) {
   };
 
   try {
+    // fetch the product page
+    const response = await axios.get(url, options);
+    console.log(response.data);
   } catch (error: any) {
     throw new Error(`Failed to create/update product: ${error.message}`);
   }
