@@ -21,7 +21,11 @@ export async function scrapeAmazonProduct(url: string) {
   try {
     // fetch the product page
     const response = await axios.get(url, options);
-    console.log(response.data);
+    const $ = cheerio.load(response.data);
+
+    // extract the product title
+    const title = $("#productTitle").text().trim();
+//    const price = extractPrice()
   } catch (error: any) {
     throw new Error(`Failed to create/update product: ${error.message}`);
   }
