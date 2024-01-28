@@ -1,4 +1,6 @@
 import { getProductById } from "@/lib/actions";
+import { formatNumber } from "@/lib/utils";
+import { Product } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -8,7 +10,7 @@ type Props = {
 };
 
 const ProductDetails = async ({ params: { id } }: Props) => {
-  const product = await getProductById(id);
+  const product: Product = await getProductById(id);
   if (!product) redirect("/");
   return (
     <div className="product-container">
@@ -36,9 +38,87 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                 Visit Product
               </Link>
             </div>
+            <div className="flex items-center gap-3">
+              <div className="product-hearts">
+                <Image
+                  src="/assets/icons/red-heart.svg"
+                  alt="heart"
+                  width={20}
+                  height={20}
+                />
+                <p className="text-base text-[#D46F77] font-semibold">
+                  {product.reviewsCount}
+                </p>
+              </div>
+              <div className="p-2 rounded-10 bg-white-200">
+                <Image
+                  src="/assets/icons/bookmark.svg"
+                  alt="bookmark"
+                  width={20}
+                  height={20}
+                />
+              </div>
+              <div className="p-2 rounded-10 bg-white-200">
+                <Image
+                  src="/assets/icons/share.svg"
+                  alt="share"
+                  width={20}
+                  height={20}
+                />
+              </div>
+            </div>
           </div>
+          <div className="product-info">
+            <div className="flex flex-col gap-2">
+              <p className="text-[34px] text-secondary font-bold">
+                {product.currency} {formatNumber(product.currentPrice)}
+              </p>
+              <p className="text-[21px] text-black opacity-50 line-through">
+                {product.currency} {formatNumber(product.originalPrice)}
+              </p>
+            </div>
+            <div className="flex flex-col gap-4">
+              <div className="flex gap-3">
+                <div className="product-stars">
+                  <Image
+                    src="/assets/icons/star.svg"
+                    alt="star"
+                    width={16}
+                    height={16}
+                  />
+                  <p className="text-sm text-primary-orange font-semibold">
+                    {product.stars || "27"}
+                  </p>
+                </div>
+                <div className="product-reviews">
+                  <Image
+                    src="/assets/icons/comment.svg"
+                    alt="comment"
+                    width={16}
+                    height={16}
+                  />
+                  <p className="text-sm text-secondary font-semibold">
+                    {product.reviewsCount} Reviews
+                  </p>
+                </div>
+              </div>
+              <p className="text-sm text-black opacity-50">
+                <span className="text-primary-green font-semibold">93%</span> of
+                buyers have recommended this
+              </p>
+            </div>
+          </div>
+          <div></div>
         </div>
       </div>
+      <div className="flex flex-col gap-4">
+          <h3 className="text-[28px] text-secondary font-semibold">
+            Product Description
+          </h3>
+          <p className="text-base text-secondary">
+            {product.description}
+          </p>
+        </div>
     </div>
   );
 };
