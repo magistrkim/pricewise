@@ -4,6 +4,7 @@ import { Product } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import PriceInfoCard from "@/components/PriceInfoCard";
 
 type Props = {
   params: { id: string };
@@ -108,17 +109,26 @@ const ProductDetails = async ({ params: { id } }: Props) => {
               </p>
             </div>
           </div>
-          <div></div>
+          <div className="my-7 flex flex-col gap-5">
+            <div className="flex flex-wrap gap-5">
+              <PriceInfoCard
+                title="Current Price"
+                iconSrc="/assets/icons/price-tag.svg"
+                value={`${product.currency} ${formatNumber(
+                  product.currentPrice
+                )}`}
+                borderColor="#b6dbff"
+              />
+            </div>
+          </div>
         </div>
       </div>
       <div className="flex flex-col gap-4">
-          <h3 className="text-[28px] text-secondary font-semibold">
-            Product Description
-          </h3>
-          <p className="text-base text-secondary">
-            {product.description}
-          </p>
-        </div>
+        <h3 className="text-[28px] text-secondary font-semibold">
+          Product Description
+        </h3>
+        <p className="text-base text-secondary">{product.description}</p>
+      </div>
     </div>
   );
 };
