@@ -141,14 +141,32 @@ const ProductDetails = async ({ params: { id } }: Props) => {
               />
             </div>
           </div>
+          Modal
         </div>
       </div>
-      <div className="flex flex-col gap-4">
-        <h3 className="text-[28px] text-secondary font-semibold">
-          Product Description
-        </h3>
-        <p className="text-base text-secondary">{product.description}</p>
+
+      <div className="flex flex-col gap-16">
+        <div className="flex flex-col gap-5">
+          <h3 className="text-2xl text-secondary font-semibold">
+            Product Description
+          </h3>
+          <div className="flex flex-col gap-4">
+            {product?.description?.split("\n")}
+          </div>
+        </div>
+        <button className="btn w-fit mx-auto flex items-center justify-center gap-3 min-w-[200px]">
+          <Image
+            src="/assets/icons/bag.svg"
+            alt="check"
+            width={24}
+            height={24}
+          />
+          <Link href="/" className="text-base text-white">
+            Buy Now
+          </Link>
+        </button>
       </div>
+      
     </div>
   );
 };
