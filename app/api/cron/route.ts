@@ -39,6 +39,6 @@ export async function GET() {
       })
     );
   } catch (error) {
-    throw new Error(`Error in GET: ${error}`);
+    throw new Error(`Error in GET function: ${error}`);
   }
 }
