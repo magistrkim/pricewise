@@ -1,7 +1,14 @@
 import Product from "@/lib/models/product.model";
 import { connectToDB } from "@/lib/mongoose";
+import { generateEmailBody, sendEmail } from "@/lib/nodemailer";
 import { scrapeAmazonProduct } from "@/lib/scraper";
-import { getLowestPrice, getHighestPrice, getAveragePrice } from "@/lib/utils";
+import {
+  getLowestPrice,
+  getHighestPrice,
+  getAveragePrice,
+  getEmailNotifType,
+} from "@/lib/utils";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -32,12 +39,35 @@ export async function GET() {
           {
             url: scrapedProduct.url,
           },
-          product,
+          product
         );
 
         // 2.Check each product's status & send email accordingly
+        const EmailNotifType = getEmailNotifType(
+          scrapedProduct,
+          currentProduct
+        );
+        if (EmailNotifType && updatedProduct.users.length > 0) {
+          const productInfo = {
+            title: updatedProduct.title,
+            url: updatedProduct.url,
+          };
+          const emailContent = await generateEmailBody(
+            productInfo,
+            EmailNotifType
+          );
+          const userEmails = updatedProduct.users.map(
+            (user: any) => user.email
+          );
+          await sendEmail(emailContent, userEmails);
+        }
+        return updatedProduct;
       })
     );
+    return NextResponse.json({
+      message: "Ok",
+      data: updatedProducts,
+    });
   } catch (error) {
     throw new Error(`Error in GET function: ${error}`);
   }
